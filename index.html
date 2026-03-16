@@ -44,6 +44,9 @@
         .note { background: rgba(255,152,0,0.15); border-left: 4px solid #ff9800; padding: 15px; border-radius: 0 8px 8px 0; margin-top: 20px; }
         .tnm-info { background: rgba(79,195,247,0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         .page-ref { background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; margin: 5px 0; font-size: 13px; }
+        .nccn-link { display: inline-block; background: #1e88e5; color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; margin: 5px; font-size: 14px; }
+        .nccn-link:hover { background: #1976d2; }
+        .pdf-note { background: rgba(255,152,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -53,6 +56,12 @@
     <p class="version">Version 1.2026 • December 8, 2025</p>
     
     <div class="form-card">
+        <div class="pdf-note">
+            📄 <strong>NCCN 官網：</strong> 
+            <a href="https://www.nccn.org/guidelines/category_1" target="_blank" class="nccn-link">NCCN Guidelines</a>
+            <a href="https://www.nccn.org/professionals/head_and_neck_text.pdf" target="_blank" class="nccn-link">Head & Neck PDF</a>
+        </div>
+        
         <div class="form-group">
             <label>📍 腫瘤部位</label>
             <select id="site" onchange="updateTNOptions()">
@@ -129,13 +138,11 @@
 </div>
 
 <script>
-// TNM 選項
 const tOptions = {
     standard: {
         c: [['','cT - 請選擇...' ],['is','cTis 原位癌'],['1','cT1 ≤2cm'],['2','cT2 2-4cm'],['3','cT3 >4cm'],['4a','cT4a 侵犯鄰近結構'],['4b','cT4b 侵犯顱底/頸總']],
         p: [['','pT - 請選擇...' ],['is','pTis 原位癌'],['1','pT1 ≤2cm'],['2','pT2 2-4cm'],['3','pT3 >4cm'],['4a','pT4a 侵犯鄰近結構'],['4b','pT4b 侵犯顱底']]
     },
-    // p16+ oropharynx 使用不同的 T分期
     hpv_pos: {
         c: [['','cT - 請選擇...' ],['1','cT1 ≤2cm (ST-6)'],['2','cT2 >2-4cm (ST-6)'],['3','cT3 >4cm或侵犯會厭舌面 (ST-6)'],['4','cT4 侵犯喉/舌肌/翼突等 (ST-6)']],
         p: [['','pT - 請選擇...' ],['1','pT1 ≤2cm'],['2','pT2 >2-4cm'],['3','pT3 >4cm'],['4','pT4 侵犯鄰近結構']]
@@ -147,7 +154,6 @@ const nOptions = {
         c: [['','cN - 請選擇...' ],['0','cN0 無淋巴結'],['1','cN1 單側≤3cm'],['2a','cN2a 單側3-6cm'],['2b','cN2b 多顆≤6cm'],['2c','cN2c 雙側≤6cm'],['3','cN3 >6cm']],
         p: [['','pN - 請選擇...' ],['0','pN0 無淋巴結'],['1','pN1 單側≤3cm'],['2a','pN2a 單側3-6cm'],['2b','pN2b 多顆≤6cm'],['2c','pN2c 雙側≤6cm'],['3','pN3 >6cm']]
     },
-    // p16+ oropharynx N 分期不同
     hpv_pos: {
         c: [['','cN - 請選擇...' ],['0','cN0 無淋巴結 (ST-7)'],['1','cN1 單側/多側 ≤6cm (ST-7)'],['2','cN2 對側/雙側 ≤6cm (ST-7)'],['3','cN3 >6cm (ST-7)']],
         p: [['','pN - 請選擇...' ],['0','pN0 無淋巴結 (ST-7)'],['1','pN1 ≤4 顆淋巴結 (ST-7)'],['2','pN2 >4 顆淋巴結 (ST-7)']]
@@ -161,14 +167,12 @@ function updateTNOptions() {
     const tOpt = isHPV ? tOptions.hpv_pos : tOptions.standard;
     const nOpt = isHPV ? nOptions.hpv_pos : nOptions.standard;
     
-    // 更新 T 選項
     ['t_c','t_p'].forEach(id => {
         const sel = document.getElementById(id);
         const opt = id === 't_c' ? tOpt.c : tOpt.p;
         sel.innerHTML = opt.map(o => `<option value="${o[0]}">${o[1]}</option>`).join('');
     });
     
-    // 更新 N 選項
     ['n_c','n_p'].forEach(id => {
         const sel = document.getElementById(id);
         const opt = id === 'n_c' ? nOpt.c : nOpt.p;
@@ -230,7 +234,6 @@ function getStage(site, t, n, m) {
     if (m === '1') return 'IV C';
     const tn = parseInt(t.replace(/\D/g,'')) || 0;
     
-    // p16+ oropharynx 分期 (ST-7)
     if (site === 'oropharynx_hpv') {
         if (n === '0' || n === '1') return 'I';
         if (n === '2') return 'II';
@@ -238,7 +241,6 @@ function getStage(site, t, n, m) {
         return 'IV';
     }
     
-    // p16- oropharynx (同標準)
     if (site === 'oropharynx_hpvneg') {
         if (n === '0') { if (tn <= 2) return 'I'; if (tn === 3) return 'II'; }
         return 'III/IV';
@@ -278,28 +280,41 @@ function getTx(site, t, n, m, rf) {
     const hasPathology = rf.includes('pT3-4') || rf.includes('pN2-3');
     const isP = !!document.getElementById('t_p').value || !!document.getElementById('n_p').value;
     
-    // ============ 口腔癌 ============
+    // NCCN 頁面對應表
+    const nccnPages = {
+        oral: { tx: 'OR-1', page: 158, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=158' },
+        oropharynx_hpv: { tx: 'ORPHPV-1', page: 1688, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=1688' },
+        oropharynx_hpvneg: { tx: 'ORPH-1', page: 1227, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=1227' },
+        hypopharynx: { tx: 'HYPO-1', page: 2329, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=2329' },
+        larynx_glot: { tx: 'GLOT-1', page: 165, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=165' },
+        larynx_supra: { tx: 'SUPRA-1', page: 4612, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=4612' },
+        nasopharynx: { tx: 'NASO-1', page: 291, url: 'https://www.nccn.org/professionals/head_and_neck_text.pdf#page=291' }
+    };
+    
+    const info = nccnPages[site] || { tx: '-', page: 0, url: '' };
+    
+    // 口腔癌
     if (site === 'oral') {
         if (n === '0' && tn <= 2) {
-            r.push({t:'🔬 初始治療', i:['手術切除原發灶 ± 頸部淋巴結清除','或根治性放療'],ref:'OR-1',type:'surgery',page:'PDF: OR-1 (p.725)'});
+            r.push({t:'🔬 初始治療', i:['手術切除原發灶 ± 頸部淋巴結清除','或根治性放療'],ref:'OR-1',type:'surgery',page:'PDF: OR-1 (p.158)'});
         } else {
-            r.push({t:'🔬 初始治療', i:['手術切除 + 頸部淋巴結清除','術後輔助放療/放化療'],ref:'OR-1',type:'surgery',page:'PDF: OR-1 (p.725)'});
+            r.push({t:'🔬 初始治療', i:['手術切除 + 頸部淋巴結清除','術後輔助放療/放化療'],ref:'OR-1',type:'surgery',page:'PDF: OR-1 (p.158)'});
         }
         
         if (isP) {
             if (rf.length === 0) {
-                r.push({t:'✅ 術後追蹤', i:['無需輔助治療','定期追蹤 (FOLL-A)'],ref:'OR-1',type:'info',page:'PDF: OR-1 (p.725)'});
+                r.push({t:'✅ 術後追蹤', i:['無需輔助治療','定期追蹤 (FOLL-A)'],ref:'OR-1',type:'info',page:'PDF: OR-1 (p.158)'});
             } else if (rf.includes('ENE') || rf.includes('posMargin')) {
-                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['同步放化療 (CRT) - 強烈建議','使用順鉑'],ref:'OR-2',type:'warning',page:'PDF: OR-2 (p.843)'});
+                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['同步放化療 (CRT) - 強烈建議','使用順鉑'],ref:'OR-2',type:'warning',page:'PDF: OR-2 (p.225)'});
             } else {
-                r.push({t:'📋 術後輔助治療', i:['考慮放療 ± 順鉑'],ref:'OR-2',type:'rt',page:'PDF: OR-2 (p.843)'});
+                r.push({t:'📋 術後輔助治療', i:['考慮放療 ± 順鉑'],ref:'OR-2',type:'rt',page:'PDF: OR-2 (p.225)'});
             }
         }
     }
     
-    // ============ 口咽癌 p16+ ============
+    // 口咽癌 p16+
     if (site === 'oropharynx_hpv') {
-        r.push({t:'📖 TNM分期', i:['p16+ 口咽癌使用不同分期系統','參考 ST-6, ST-7'],ref:'ST-6, ST-7',type:'info',page:'PDF: ST-6 (p.1588)'});
+        r.push({t:'📖 TNM分期', i:['p16+ 口咽癌使用不同分期系統','參考 ST-6, ST-7'],ref:'ST-6, ST-7',type:'info',page:'PDF: ST-6'});
         
         if (tn <= 2 && (n === '0' || n === '1')) {
             r.push({t:'🔬 早期 (I-II期)', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPHPV-1',type:'surgery',page:'PDF: ORPHPV-1 (p.1688)'});
@@ -315,58 +330,64 @@ function getTx(site, t, n, m, rf) {
         }
     }
     
-    // ============ 口咽癌 p16- ============
+    // 口咽癌 p16-
     if (site === 'oropharynx_hpvneg') {
-        r.push({t:'📖 TNM分期', i:['p16- 口咽癌使用標準分期','參考 ST-4'],ref:'ST-4',type:'info',page:'PDF: ST-4 (p.11359)'});
+        r.push({t:'📖 TNM分期', i:['p16- 口咽癌使用標準分期','參考 ST-4'],ref:'ST-4',type:'info',page:'PDF: ST-4'});
         
         if (n === '0' && tn <= 2) {
-            r.push({t:'🔬 早期', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPH-1',type:'surgery',page:'PDF: ORPH-1 (p.1221)'});
+            r.push({t:'🔬 早期', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPH-1',type:'surgery',page:'PDF: ORPH-1 (p.1227)'});
         } else {
-            r.push({t:'🔬 局部晚期', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助'],ref:'ORPH-2',type:'rt',page:'PDF: ORPH-2 (p.1348)'});
+            r.push({t:'🔬 局部晚期', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助'],ref:'ORPH-2',type:'rt',page:'PDF: ORPH-2 (p.1354)'});
         }
     }
     
-    // ============ 下咽癌 ============
+    // 下咽癌
     if (site === 'hypopharynx') {
         if (tn === 1 && n === '0') {
             r.push({t:'🔬 早期 T1 N0', i:['喉保留手術','或根治性放療'],ref:'HYPO-1',type:'surgery',page:'PDF: HYPO-1 (p.2329)'});
         } else {
-            r.push({t:'🔬 治療', i:['手術為主 + 淋巴結清除','術後放療或放化療'],ref:'HYPO-1/2',type:'surgery',page:'PDF: HYPO-1 (p.2329)'});
+            r.push({t:'🔬 治療', i:['手術為主 + 淋巴結清除','術後放療或放化療'],ref:'HYPO-1',type:'surgery',page:'PDF: HYPO-1 (p.2329)'});
         }
     }
     
-    // ============ 聲門癌 ============
+    // 聲門癌
     if (site === 'larynx_glot') {
         if (t === 'is') {
-            r.push({t:'🔬 原位癌', i:['內視鏡切除 (首選)','或根治性放療'],ref:'GLOT-1',type:'surgery',page:'PDF: GLOT-1 (p.3798)'});
+            r.push({t:'🔬 原位癌', i:['內視鏡切除 (首選)','或根治性放療'],ref:'GLOT-1',type:'surgery',page:'PDF: GLOT-1 (p.165)'});
         } else if (tn <= 2 && n === '0') {
-            r.push({t:'🔬 早期 (I-II期)', i:['雷射手術 (首選)','或根治性放療'],ref:'GLOT-1',type:'surgery',page:'PDF: GLOT-1 (p.3798)'});
+            r.push({t:'🔬 早期 (I-II期)', i:['雷射手術 (首選)','或根治性放療'],ref:'GLOT-1',type:'surgery',page:'PDF: GLOT-1 (p.165)'});
         } else {
-            r.push({t:'🔬 晚期', i:['全喉切除 + 術後放療/化療','或根治性同步放化療'],ref:'GLOT-1/2',type:'rt',page:'PDF: GLOT-1 (p.3798)'});
+            r.push({t:'🔬 晚期', i:['全喉切除 + 術後放療/化療','或根治性同步放化療'],ref:'GLOT-1',type:'rt',page:'PDF: GLOT-1 (p.165)'});
         }
     }
     
-    // ============ 聲門上癌 ============
+    // 聲門上癌
     if (site === 'larynx_supra') {
         if (tn <= 2 && n === '0') {
-            r.push({t:'🔬 早期', i:['聲門上喉切除術','或根治性放療'],ref:'SUPRA-1',type:'surgery',page:'PDF: SUPRA-1 (p.4612)'});
+            r.push({t:'🔬 早期', i:['聲門上喉切除術','或根治性放療'],ref:'SUPRA-1',type:'surgery',page:'PDF: SUPRA-1'});
         } else {
-            r.push({t:'🔬 晚期', i:['全喉切除 + 術後放療/化療','或根治性同步放化療'],ref:'SUPRA-1',type:'rt',page:'PDF: SUPRA-1 (p.4612)'});
+            r.push({t:'🔬 晚期', i:['全喉切除 + 術後放療/化療','或根治性同步放化療'],ref:'SUPRA-1',type:'rt',page:'PDF: SUPRA-1'});
         }
     }
     
-    // ============ 鼻咽癌 ============
+    // 鼻咽癌
     if (site === 'nasopharynx') {
-        r.push({t:'🔬 治療', i:['同步放化療 + 輔助化療','(順鉑為主)'],ref:'NASO-1',type:'rt',page:'PDF: NASO-1 (p.3113)'});
+        r.push({t:'🔬 治療', i:['同步放化療 + 輔助化療','(順鉑為主)'],ref:'NASO-1',type:'rt',page:'PDF: NASO-1 (p.291)'});
         r.push({t:'📋 復發/轉移', i:['免疫治療','化學治療','臨床試驗'],ref:'NASO-B',type:'info',page:'PDF: NASO-B'});
     }
     
-    // ============ 轉移 ============
+    // 轉移
     if (m === '1') {
         r.push({t:'⚠️ 轉移性疾病 (IV C)', i:['系統治療為主','免疫治療','臨床試驗'],ref:'ADV-1',type:'warning',page:'PDF: ADV-1'});
     }
     
-    return r.map(x => '<div class="treatment '+x.type+'"><h3>'+x.t+'</h3>'+x.i.map(i=>'<p>• '+i+'</p>').join('')+'<div class="treatment-ref">📖 '+x.ref+'</div><div class="page-ref">📄 '+x.page+'</div></div>').join('');
+    // 加入 NCCN 連結
+    const linkHtml = `<div style="margin-top:15px; padding:10px; background:rgba(30,136,229,0.2); border-radius:8px;">
+        <strong>📖  NCCN 原始指引：</strong><br>
+        <a href="${info.url}" target="_blank" style="color:#4fc3f7;">查看 ${info.tx} 頁面</a>
+    </div>`;
+    
+    return r.map(x => '<div class="treatment '+x.type+'"><h3>'+x.t+'</h3>'+x.i.map(i=>'<p>• '+i+'</p>').join('')+'<div class="treatment-ref">📖 '+x.ref+'</div><div class="page-ref">📄 '+x.page+'</div></div>').join('') + linkHtml;
 }
 </script>
 </body>
