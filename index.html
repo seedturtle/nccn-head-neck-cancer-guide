@@ -284,13 +284,13 @@ function getTx(site, t, n, m, rf) {
     
     // NCCN 頁面對應表
     const nccnPages = {
-        oral: { tx: 'OR-1', page: 158, url: 'https://nccnkiritu.zeabur.app?page=158' },
-        oropharynx_hpv: { tx: 'ORPHPV-1', page: 159, url: 'https://nccnkiritu.zeabur.app?page=159' },
-        oropharynx_hpvneg: { tx: 'ORPH-1', page: 1227, url: 'https://nccnkiritu.zeabur.app?page=1227' },
-        hypopharynx: { tx: 'HYPO-1', page: 162, url: 'https://nccnkiritu.zeabur.app?page=162' },
-        larynx_glot: { tx: 'GLOT-1', page: 165, url: 'https://nccnkiritu.zeabur.app?page=165' },
-        larynx_supra: { tx: 'SUPRA-1', page: 166, url: 'https://nccnkiritu.zeabur.app?page=166' },
-        nasopharynx: { tx: 'NASO-1', page: 163, url: 'https://nccnkiritu.zeabur.app?page=163' }
+        oral: { tx: 'OR-1', page: 158, url: 'https://nccnkiritu.zeabur.app/?page=158' },
+        oropharynx_hpv: { tx: 'ORPHPV-1', page: 159, url: 'https://nccnkiritu.zeabur.app/?page=159' },
+        oropharynx_hpvneg: { tx: 'ORPH-1', page: 1227, url: 'https://nccnkiritu.zeabur.app/?page=1227' },
+        hypopharynx: { tx: 'HYPO-1', page: 162, url: 'https://nccnkiritu.zeabur.app/?page=162' },
+        larynx_glot: { tx: 'GLOT-1', page: 165, url: 'https://nccnkiritu.zeabur.app/?page=165' },
+        larynx_supra: { tx: 'SUPRA-1', page: 166, url: 'https://nccnkiritu.zeabur.app/?page=166' },
+        nasopharynx: { tx: 'NASO-1', page: 163, url: 'https://nccnkiritu.zeabur.app/?page=163' }
     };
     
     const info = nccnPages[site] || { tx: '-', page: 0, url: '' };
@@ -391,7 +391,7 @@ function getTx(site, t, n, m, rf) {
     
     function getPageBtn(page) {
     const match = page.match(/p\.(\d+)/);
-    if (match) return '<a href="https://nccnkiritu.zeabur.app?page='+match[1]+'" target="_blank" class="pdf-page-btn">📄 第 '+match[1]+' 頁</a>';
+    if (match) return '<a href="https://nccnkiritu.zeabur.app/?page='+match[1]+'" target="_blank" class="pdf-page-btn">📄 第 '+match[1]+' 頁</a>';
     return '<span class="pdf-page-btn">📄 '+page+'</span>';
 }
 return r.map(x => '<div class="treatment '+x.type+'"><h3>'+x.t+'</h3>'+x.i.map(i=>'<p>• '+i+'</p>').join('')+'<div class="treatment-ref">📖 '+x.ref+'</div>'+getPageBtn(x.page)+'</div>').join('') + linkHtml;
