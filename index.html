@@ -14,36 +14,19 @@
             padding: 20px;
             color: #fff;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #4fc3f7;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #90a4ae;
-            margin-bottom: 30px;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #4fc3f7; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #90a4ae; margin-bottom: 30px; }
+        .version { text-align: center; color: #ff9800; font-size: 14px; margin-bottom: 20px; }
         .form-card {
             background: rgba(255,255,255,0.1);
             border-radius: 16px;
             padding: 30px;
             backdrop-filter: blur(10px);
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #b0bec5;
-            font-weight: 500;
-        }
-        select, input[type="text"], input[type="number"] {
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #b0bec5; font-weight: 500; }
+        select {
             width: 100%;
             padding: 12px;
             border: 2px solid #37474f;
@@ -52,31 +35,19 @@
             color: #fff;
             font-size: 16px;
         }
-        select:focus, input:focus {
-            outline: none;
-            border-color: #4fc3f7;
-        }
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-        }
+        select:focus { outline: none; border-color: #4fc3f7; }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
         .checkbox-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px;
+            padding: 10px;
             background: rgba(255,255,255,0.05);
             border-radius: 8px;
             cursor: pointer;
         }
-        .checkbox-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        .checkbox-item input {
-            width: 20px;
-            height: 20px;
-        }
+        .checkbox-item:hover { background: rgba(255,255,255,0.1); }
+        .checkbox-item input { width: 20px; height: 20px; }
         button {
             width: 100%;
             padding: 16px;
@@ -89,132 +60,125 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        button:hover {
-            transform: scale(1.02);
-        }
-        #result {
-            margin-top: 30px;
-            display: none;
-        }
+        button:hover { transform: scale(1.02); }
+        #result { margin-top: 30px; display: none; }
         .result-card {
             background: rgba(255,255,255,0.1);
             border-radius: 16px;
-            padding: 30px;
+            padding: 25px;
             margin-bottom: 20px;
         }
-        .stage {
-            font-size: 48px;
-            text-align: center;
-            color: #ff9800;
-            margin: 20px 0;
-        }
-        .stage-label {
-            text-align: center;
-            color: #90a4ae;
-            font-size: 18px;
-        }
+        .stage { font-size: 64px; text-align: center; color: #ff9800; margin: 10px 0; }
+        .stage-label { text-align: center; color: #90a4ae; font-size: 18px; }
         .treatment {
-            background: rgba(79, 195, 247, 0.1);
+            background: rgba(79, 195, 247, 0.15);
             border-left: 4px solid #4fc3f7;
             padding: 15px;
             margin: 10px 0;
             border-radius: 0 8px 8px 0;
         }
-        .treatment h3 {
-            margin: 0 0 10px 0;
-            color: #4fc3f7;
-        }
+        .treatment h3 { margin: 0 0 10px 0; color: #4fc3f7; }
         .note {
-            background: rgba(255, 152, 0, 0.1);
+            background: rgba(255, 152, 0, 0.15);
             border-left: 4px solid #ff9800;
             padding: 15px;
             border-radius: 0 8px 8px 0;
             margin-top: 20px;
         }
-        .loading {
-            text-align: center;
-            padding: 40px;
+        .note strong { color: #ff9800; }
+        .tnm-info { 
+            background: rgba(79, 195, 247, 0.1); 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px;
         }
+        .warning { color: #ff5252; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🏥 頭頸癌 NCCN 治療指引</h1>
-        <p class="subtitle">NCCN Guidelines for Head and Neck Cancer</p>
+        <p class="subtitle">NCCN Guidelines for Head and Neck Cancers</p>
+        <p class="version">Version 1.2026 • December 8, 2025</p>
         
         <div class="form-card">
             <div class="form-group">
                 <label>📍 腫瘤部位 (Primary Site)</label>
-                <select id="site">
+                <select id="site" onchange="updateTNOptions()">
                     <option value="">請選擇部位...</option>
                     <option value="oral">口腔 (Oral Cavity)</option>
-                    <option value="oropharynx">口咽 (Oropharynx)</option>
+                    <option value="oropharynx">口咽 (Oropharynx) - p16+</option>
+                    <option value="oropharynx_hpvneg">口咽 (Oropharynx) - p16-</option>
                     <option value="hypopharynx">下咽 (Hypopharynx)</option>
-                    <option value="larynx">喉 (Larynx)</option>
+                    <option value="larynx_glot">聲門 (Glottic Larynx)</option>
+                    <option value="larynx_supra">聲門上 (Supraglottic Larynx)</option>
                     <option value="nasopharynx">鼻咽 (Nasopharynx)</option>
-                    <option value="salivary">唾液腺 (Salivary Gland)</option>
-                    <option value="thyroid">甲狀腺 (Thyroid)</option>
                 </select>
             </div>
             
             <div class="form-group">
-                <label>🔬 TNM 分期</label>
+                <label>🔬 TNM 分期 (AJCC 8th Edition)</label>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                     <div>
                         <label>T (腫瘤大小)</label>
                         <select id="tumor">
-                            <option value="">Tx</option>
-                            <option value="is">Tis (原位癌)</option>
-                            <option value="1">T1</option>
-                            <option value="2">T2</option>
-                            <option value="3">T3</option>
-                            <option value="4a">T4a</option>
-                            <option value="4b">T4b</option>
+                            <option value="tx">Tx - 無法評估</option>
+                            <option value="is">Tis - 原位癌</option>
+                            <option value="1">T1 - ≤2cm</option>
+                            <option value="2">T2 - 2-4cm</option>
+                            <option value="3">T3 - >4cm</option>
+                            <option value="4a">T4a - 侵犯鄰近結構</option>
+                            <option value="4b">T4b - 侵犯顱底/頸總動脈</option>
                         </select>
                     </div>
                     <div>
                         <label>N (淋巴結)</label>
                         <select id="node">
-                            <option value="">Nx</option>
-                            <option value="0">N0</option>
-                            <option value="1">N1</option>
-                            <option value="2">N2</option>
-                            <option value="2a">N2a</option>
-                            <option value="2b">N2b</option>
-                            <option value="2c">N2c</option>
-                            <option value="3">N3</option>
+                            <option value="nx">Nx - 無法評估</option>
+                            <option value="0">N0 - 無淋巴結</option>
+                            <option value="1">N1 - 單側 ≤3cm</option>
+                            <option value="2a">N2a - 單側 3-6cm</option>
+                            <option value="2b">N2b - 多顆 ≤6cm</option>
+                            <option value="2c">N2c - 雙側/對側 ≤6cm</option>
+                            <option value="3">N3 - >6cm</option>
                         </select>
                     </div>
                     <div>
                         <label>M (遠端轉移)</label>
                         <select id="metastasis">
-                            <option value="0">M0 (無轉移)</option>
-                            <option value="1">M1 (有轉移)</option>
+                            <option value="0">M0 - 無遠端轉移</option>
+                            <option value="1">M1 - 有遠端轉移</option>
                         </select>
                     </div>
                 </div>
             </div>
             
             <div class="form-group">
-                <label>⚠️ 危險因子 (Risk Factors)</label>
+                <label>⚠️ 病理危險因子 (Adverse Pathologic Features)</label>
                 <div class="checkbox-group">
                     <label class="checkbox-item">
-                        <input type="checkbox" value="margin_positive"> 手術切緣阳性
+                        <input type="checkbox" value="extracapsular"> 淋巴結包膜外侵犯 (ENE)
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" value="extracapsular"> 淋巴結包膜外侵犯
+                        <input type="checkbox" value="positive_margin"> 手術切緣陽性
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" value="perineural"> 神經周侵犯
+                        <input type="checkbox" value="close_margin"> 手術切緣 close (<5mm)
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" value="vascular"> 血管侵犯
+                        <input type="checkbox" value="perineural"> 神經周侵犯 (PNI)
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" value="multiple_nodes"> 多顆淋巴結
+                        <input type="checkbox" value="vascular"> 血管侵犯 (LVI)
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" value="ecs_advanced"> 晚期淋巴結 N2-N3
+                        <input type="checkbox" value="pt3_pt4"> pT3 或 pT4 原發灶
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="n2_n3"> pN2 或 pN3 淋巴結
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="level_4_5"> 淋巴結位於 Level IV 或 V
                     </label>
                 </div>
             </div>
@@ -224,77 +188,26 @@
         
         <div id="result">
             <div class="result-card">
-                <div class="stage-label">分期結果</div>
+                <div class="tnm-info" id="tnmInfo"></div>
+                <div class="stage-label">分期結果 (Stage)</div>
                 <div class="stage" id="stageResult">-</div>
             </div>
             
             <div class="result-card">
-                <h3>💊 治療建議</h3>
+                <h3>💊 NCCN 治療建議 (Treatment Recommendations)</h3>
                 <div id="treatmentResult"></div>
             </div>
             
             <div class="note">
-                <strong>⚠️ 重要提醒：</strong>此系統僅供參考，實際治療決策應由醫療團隊根據個別患者情況制定。請參閱最新版 NCCN Guidelines。
+                <strong>⚠️ 重要提醒：</strong><br>
+                • 此系統僅供參考，實際治療決策應由醫療團隊根據個別患者情況制定<br>
+                • 請參閱最新版 NCCN Guidelines (Version 1.2026, December 8, 2025)<br>
+                • Category 1: 基於高水平證據的一致共識
             </div>
         </div>
     </div>
     
     <script>
-        // TNM 分期數據庫
-        const stagingData = {
-            oral: {
-                is: { n0m0: 0, nx: 0 },
-                t1: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t2: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t3: { n0m0: 2, n1m0: 3, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t4a: { n0m0: 3, n1m0: 3, n2m0: 4, n3m0: 4, any_n_m1: 4 },
-                t4b: { any_n: 4 },
-                tx: { any_n: 9 }
-            },
-            oropharynx: {
-                is: { n0m0: 0 },
-                t1: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t2: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t3: { n0m0: 2, n1m0: 2, n2m0: 3, n3m0: 4, any_n_m1: 4 },
-                t4a: { n0m0: 3, n1m0: 3, n2m0: 4, n3m0: 4, any_n_m1: 4 },
-                t4b: { any_n: 4 },
-                tx: { any_n: 9 }
-            },
-            larynx: {
-                is: { n0m0: 0 },
-                t1: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4 },
-                t2: { n0m0: 1, n1m0: 2, n2m0: 3, n3m0: 4 },
-                t3: { n0m0: 2, n1m0: 3, n2m0: 3, n3m0: 4 },
-                t4a: { n0m0: 3, n1m0: 3, n2m0: 4, n3m0: 4 },
-                t4b: { any_n: 4 }
-            }
-        };
-        
-        // 治療建議數據庫
-        const treatmentData = {
-            oral: {
-                0: ["原位癌 (Tis): 手術切除 ± 放療"],
-                1: ["T1N0M0: 手術切除", "手術後如有危險因子需輔助放療"],
-                2: ["T2N0M0: 手術切除 ± 頸部淋巴清除", "高風險者術後放化療"],
-                3: ["T1-3N1M0: 手術 + 頸部淋巴清除", "術後輔助放療或放化療"],
-                4: ["T4 或 N2-3: 手術 + 術後放化療", "無法手術者可考慮根治性放化療"]
-            },
-            oropharynx: {
-                0: ["原位癌: 手術切除或放療"],
-                1: ["T1N0M0: 手術或根治性放療"],
-                2: ["T1-2N1: 手術或放療"],
-                3: ["T1-3N2-3 或 T3N1: 手術 + 術後放化療", "或根治性放化療"],
-                4: ["T4 或 M1: 系統治療 + 放療", "臨床試驗"]
-            },
-            larynx: {
-                0: ["原位癌: 雷射手術或放療"],
-                1: ["T1-2N0M0: 手術(雷射/開放) 或根治性放療"],
-                2: ["T2N0M0: 手術或根治性放療"],
-                3: ["T3N0M0: 手術或根治性放化療"],
-                4: ["T4: 手術 + 術後放化療", "無法手術者: 根治性放化療"]
-            }
-        };
-        
         function calculateStage() {
             const site = document.getElementById('site').value;
             const t = document.getElementById('tumor').value;
@@ -313,56 +226,203 @@
             });
             
             // 計算分期
-            let stage = calculateTNM(site, t, n, m);
+            const stageInfo = calculateTNM(site, t, n, m);
             
             // 顯示結果
             document.getElementById('result').style.display = 'block';
-            document.getElementById('stageResult').textContent = stage === 0 ? '0 (原位癌)' : 
-                stage === 1 ? 'I' : 
-                stage === 2 ? 'II' : 
-                stage === 3 ? 'III' : 
-                stage === 4 ? 'IV' : '-';
+            document.getElementById('stageResult').textContent = stageInfo.stage;
+            
+            // 顯示 TNM 資訊
+            document.getElementById('tnmInfo').innerHTML = `
+                <strong>TNM:</strong> ${t.toUpperCase()} • ${n.toUpperCase()} • M${m}
+            `;
             
             // 顯示治療建議
-            let treatments = treatmentData[site][stage] || treatmentData[site]['4'];
-            
-            // 添加危險因子相關建議
-            if (riskFactors.includes('margin_positive') || riskFactors.includes('extracapsular')) {
-                treatments.push('⚠️ 陽性切緣或包膜外侵犯：強烈建議術後放化療');
-            }
-            
-            if (riskFactors.includes('perineural') || riskFactors.includes('vascular')) {
-                treatments.push('⚠️ 神經周或血管侵犯：考慮術後放療');
-            }
-            
-            document.getElementById('treatmentResult').innerHTML = treatments.map(t => 
-                `<div class="treatment"><h3>${t}</h3></div>`
-            ).join('');
+            const treatments = getTreatmentRecommendations(site, t, n, m, riskFactors);
+            document.getElementById('treatmentResult').innerHTML = treatments;
             
             // 滾動到結果
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
         
         function calculateTNM(site, t, n, m) {
-            // 簡化分期計算
-            if (m === '1') return 4; // M1 = IVC
+            if (m === '1') return { stage: 'IV C', stageNum: 4 };
             
-            if (n === '3' || n === '2c') return 3;
+            const nVal = parseInt(n.replace(/\D/g, '')) || 0;
+            const tNum = parseInt(t.replace(/\D/g, '')) || 0;
             
-            if (t === 'is') return 0;
-            if (t === '4b') return 4;
-            
-            if (n === '0') {
-                if (t === '1' || t === '2') return 1;
-                if (t === '3' || t === '4a') return 2;
+            // 口腔癌分期
+            if (site === 'oral') {
+                if (t === 'is') return { stage: '0', stageNum: 0 };
+                if (n === '0') {
+                    if (t === '1' || t === '2') return { stage: 'I', stageNum: 1 };
+                    if (t === '3') return { stage: 'II', stageNum: 2 };
+                    if (t === '4a' || t === '4b') return { stage: 'III', stageNum: 3 };
+                }
+                if (n === '1' || n === '2a' || n === '2b') return { stage: 'III', stageNum: 3 };
+                if (n === '2c' || n === '3') return { stage: 'IV A', stageNum: 4 };
             }
             
-            if (n === '1' || n === '2a' || n === '2b') {
-                if (t === '1' || t === '2') return 2;
-                return 3;
+            // 口咽癌 p16+
+            if (site === 'oropharynx') {
+                if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
+                if (n === '0' && t === '2') return { stage: 'II', stageNum: 2 };
+                if ((n === '1' || n === '2') && t <= '2') return { stage: 'III', stageNum: 3 };
+                return { stage: 'IV', stageNum: 4 };
             }
             
-            return 3;
+            // 下咽癌
+            if (site === 'hypopharynx') {
+                if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
+                if (n === '0' && t === '2') return { stage: 'II', stageNum: 2 };
+                if (n === '0' && t === '3') return { stage: 'III', stageNum: 3 };
+                return { stage: 'IV', stageNum: 4 };
+            }
+            
+            // 喉癌
+            if (site === 'larynx_glot' || site === 'larynx_supra') {
+                if (n === '0') {
+                    if (t === 'is') return { stage: '0', stageNum: 0 };
+                    if (t === '1') return { stage: 'I', stageNum: 1 };
+                    if (t === '2') return { stage: 'II', stageNum: 2 };
+                    if (t === '3') return { stage: 'III', stageNum: 3 };
+                }
+                return { stage: 'IV', stageNum: 4 };
+            }
+            
+            // 鼻咽癌
+            if (site === 'nasopharynx') {
+                if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
+                if (n === '1') return { stage: 'II', stageNum: 2 };
+                if (n === '2') return { stage: 'III', stageNum: 3 };
+                return { stage: 'IV', stageNum: 4 };
+            }
+            
+            return { stage: '-', stageNum: 0 };
+        }
+        
+        function getTreatmentRecommendations(site, t, n, m, riskFactors) {
+            let treatments = [];
+            const tNum = parseInt(t.replace(/\D/g, '')) || 0;
+            const nNum = parseInt(n.replace(/\D/g, '')) || 0;
+            
+            // 口腔癌
+            if (site === 'oral') {
+                if (n === '0' && tNum <= 2) {
+                    treatments.push({ title: '首選手術治療', items: [
+                        '手術切除原發灶 ± 頸部淋巴結清除',
+                        '或根治性放療 (RT)',
+                        '若無法手術'
+                    ]});
+                } else if (n === '0' && t === '3') {
+                    treatments.push({ title: '首選手術治療', items: [
+                        '手術切除 + 頸部淋巴結清除',
+                        '術後輔助放療或放化療'
+                    ]});
+                } else {
+                    treatments.push({ title: '首選手術治療', items: [
+                        '手術切除原發灶 + 頸部淋巴結清除',
+                        '術後輔助放療或放化療'
+                    ]});
+                }
+                
+                // 術後輔助治療
+                if (riskFactors.includes('extracapsular') || riskFactors.includes('positive_margin')) {
+                    treatments.push({ title: '術後輔助治療 (Category 1)', items: [
+                        '放化療 (CRT) - 強烈建議',
+                        '參考: SYST-A 原則'
+                    ]});
+                } else if (riskFactors.includes('n2_n3') || riskFactors.includes('pt3_pt4') || riskFactors.length > 0) {
+                    treatments.push({ title: '術後輔助治療', items: [
+                        '考慮放療 ± 順鉑同步化療',
+                        '高風險因素: ENE, positive margins, pN2-N3'
+                    ]});
+                }
+            }
+            
+            // 口咽癌 p16+
+            if (site === 'oropharynx') {
+                if (tNum <= 2 && (n === '0' || n === '1')) {
+                    treatments.push({ title: '早期 (I-II期)', items: [
+                        '手術切除 ± 頸部淋巴結清除',
+                        '或根治性放療',
+                        'HPV+ 預後較佳'
+                    ]});
+                } else {
+                    treatments.push({ title: '局部晚期 (III-IV期)', items: [
+                        '根治性放化療 (CRT)',
+                        '或手術 + 術後輔助治療',
+                        'De-escalation 治療正在臨床試驗中 (Category 2B)'
+                    ]});
+                }
+            }
+            
+            // 下咽癌
+            if (site === 'hypopharynx') {
+                treatments.push({ title: '治療原則', items: [
+                    '手術為主 + 頸部淋巴結清除',
+                    '術後放療或放化療',
+                    '若無法手術: 根治性放化療'
+                ]});
+            }
+            
+            // 喉癌
+            if (site === 'larynx_glot') {
+                if (t === '1' || t === '2') {
+                    treatments.push({ title: '早期聲門癌 (I-II期)', items: [
+                        '雷射手術 (首選)',
+                        '或根治性放療',
+                        '開放式手術'
+                    ]});
+                } else {
+                    treatments.push({ title: '晚期聲門癌 (III-IV期)', items: [
+                        '全喉切除術 + 術後放療',
+                        '或根治性放化療 (保留喉嚨)'
+                    ]});
+                }
+            }
+            
+            // 鼻咽癌
+            if (site === 'nasopharynx') {
+                treatments.push({ title: '治療原則', items: [
+                    '同步放化療 (CRT) + 輔助化療',
+                    '誘導化療 + 同步放化療',
+                    '免疫治療 (PD-1 抑制劑) 用於復發/轉移'
+                ]});
+            }
+            
+            // 晚期/轉移
+            if (m === '1') {
+                treatments.push({ title: '轉移性疾病 (IV C)', items: [
+                    '系統治療為主',
+                    '免疫治療 (Pembrolizumab, Nivolumab)',
+                    '化學治療',
+                    '臨床試驗',
+                    '參考 SYST-A 原則'
+                ]});
+            }
+            
+            // 危險因子警告
+            if (riskFactors.includes('extracapsular')) {
+                treatments.push({ title: '⚠️ 包膜外侵犯 (ENE) 警告', items: [
+                    '高度建議術後放化療 (Category 1)',
+                    '預後較差'
+                ], warning: true });
+            }
+            
+            if (riskFactors.includes('positive_margin')) {
+                treatments.push({ title: '⚠️ 切緣陽性 警告', items: [
+                    '建議再次手術切除',
+                    '若無法切除: 術後放化療'
+                ], warning: true });
+            }
+            
+            return treatments.map(t => `
+                <div class="treatment" style="${t.warning ? 'border-left-color: #ff5252; background: rgba(255,82,82,0.15);' : ''}">
+                    <h3>${t.title}</h3>
+                    ${t.items.map(i => `<p>• ${i}</p>`).join('')}
+                </div>
+            `).join('');
         }
     </script>
 </body>
