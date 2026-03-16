@@ -402,6 +402,7 @@ function getTx(site, t, n, m, rf) {
 }
 return r.map(x => '<div class="treatment '+x.type+'"><h3>'+x.t+'</h3>'+x.i.map(i=>'<p>• '+i+'</p>').join('')+'<div class="treatment-ref">📖 '+x.ref+'</div>'+getPageBtn(x.page)+'</div>').join('') + linkHtml;
 }
+window.onload = function() { updateTNOptions(); };
 </script>
 </body>
 </html>
