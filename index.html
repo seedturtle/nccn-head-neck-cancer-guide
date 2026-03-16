@@ -237,9 +237,12 @@ function getStage(site, t, n, m) {
     const tn = parseInt(t.replace(/\D/g,'')) || 0;
     
     if (site === 'oropharynx_hpv') {
+        const tn_num = parseInt(t.replace(/\D/g,'')) || 0;
+        const nn_num = parseInt(n.replace(/\D/g,'')) || 0;
+        const t_sum = tn_num + nn_num;
         if (n === '0' || n === '1') return 'I';
         if (n === '2') return 'II';
-        if (n === '3' || tn >= 3) return 'III';
+        if (n === '3' || t_sum >= 3) return 'III';
         return 'IV';
     }
     
