@@ -225,7 +225,7 @@ function calc() {
     document.getElementById('stageResult').textContent = stage;
     
     const tDisp = t_p ? 'p'+t_p.toUpperCase() : (t_c ? 'c'+t_c.toUpperCase() : '-');
-    const nDisp = n_p ? 'p'+n_p.toUpperCase() : (n_c ? 'c'+(n_c === '2a' || n_c === '2b' || n_c === '2c' ? '2' : n_c).toUpperCase() : '-');
+    const nDisp = n_p ? 'p'+n_p.toUpperCase() : (n_c ? 'c'+n_c.toUpperCase() : '-');
     document.getElementById('tnmInfo').innerHTML = '<strong>TNM:</strong> ' + tDisp + ' • ' + nDisp + ' • M' + m;
     
     document.getElementById('treatmentResult').innerHTML = getTx(site, t, n, m, rf);
