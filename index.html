@@ -224,7 +224,6 @@ function calc() {
     document.getElementById('result').style.display = 'block';
     document.getElementById('stageResult').textContent = stage;
     
-    const tDisp = t_p ? 'p'+t_p.toUpperCase() : (t_c ? 'c'+t_c.toUpperCase() : '-');
     const tDisp = t_p ? 'pT'+t_p : (t_c ? 'cT'+t_c : '-');
     const nDisp = n_p ? 'pN'+n_p : (n_c ? 'cN'+n_c : '-');
     document.getElementById('tnmInfo').innerHTML = '<strong>TNM:</strong> ' + tDisp + ' • ' + nDisp + ' • M' + m;
