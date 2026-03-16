@@ -78,6 +78,15 @@
             border-radius: 0 8px 8px 0;
         }
         .treatment h3 { margin: 0 0 10px 0; color: #4fc3f7; }
+        .treatment-ref {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .treatment-ref a { color: #4fc3f7; text-decoration: none; }
+        .treatment-ref a:hover { text-decoration: underline; }
         .note {
             background: rgba(255, 152, 0, 0.15);
             border-left: 4px solid #ff9800;
@@ -92,7 +101,6 @@
             border-radius: 8px; 
             margin-bottom: 20px;
         }
-        .warning { color: #ff5252; }
     </style>
 </head>
 <body>
@@ -219,39 +227,27 @@
                 return;
             }
             
-            // 獲取危險因子
             const riskFactors = [];
             document.querySelectorAll('.checkbox-group input:checked').forEach(cb => {
                 riskFactors.push(cb.value);
             });
             
-            // 計算分期
             const stageInfo = calculateTNM(site, t, n, m);
             
-            // 顯示結果
             document.getElementById('result').style.display = 'block';
             document.getElementById('stageResult').textContent = stageInfo.stage;
             
-            // 顯示 TNM 資訊
-            document.getElementById('tnmInfo').innerHTML = `
-                <strong>TNM:</strong> ${t.toUpperCase()} • ${n.toUpperCase()} • M${m}
-            `;
+            document.getElementById('tnmInfo').innerHTML = '<strong>TNM:</strong> ' + t.toUpperCase() + ' • ' + n.toUpperCase() + ' • M' + m;
             
-            // 顯示治療建議
             const treatments = getTreatmentRecommendations(site, t, n, m, riskFactors);
             document.getElementById('treatmentResult').innerHTML = treatments;
             
-            // 滾動到結果
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
         
         function calculateTNM(site, t, n, m) {
             if (m === '1') return { stage: 'IV C', stageNum: 4 };
             
-            const nVal = parseInt(n.replace(/\D/g, '')) || 0;
-            const tNum = parseInt(t.replace(/\D/g, '')) || 0;
-            
-            // 口腔癌分期
             if (site === 'oral') {
                 if (t === 'is') return { stage: '0', stageNum: 0 };
                 if (n === '0') {
@@ -263,15 +259,13 @@
                 if (n === '2c' || n === '3') return { stage: 'IV A', stageNum: 4 };
             }
             
-            // 口咽癌 p16+
             if (site === 'oropharynx') {
                 if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
                 if (n === '0' && t === '2') return { stage: 'II', stageNum: 2 };
-                if ((n === '1' || n === '2') && t <= '2') return { stage: 'III', stageNum: 3 };
+                if ((n === '1' || n === '2') && parseInt(t.replace(/\D/g,'')) <= 2) return { stage: 'III', stageNum: 3 };
                 return { stage: 'IV', stageNum: 4 };
             }
             
-            // 下咽癌
             if (site === 'hypopharynx') {
                 if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
                 if (n === '0' && t === '2') return { stage: 'II', stageNum: 2 };
@@ -279,7 +273,6 @@
                 return { stage: 'IV', stageNum: 4 };
             }
             
-            // 喉癌
             if (site === 'larynx_glot' || site === 'larynx_supra') {
                 if (n === '0') {
                     if (t === 'is') return { stage: '0', stageNum: 0 };
@@ -290,7 +283,6 @@
                 return { stage: 'IV', stageNum: 4 };
             }
             
-            // 鼻咽癌
             if (site === 'nasopharynx') {
                 if (n === '0' && t === '1') return { stage: 'I', stageNum: 1 };
                 if (n === '1') return { stage: 'II', stageNum: 2 };
@@ -303,126 +295,132 @@
         
         function getTreatmentRecommendations(site, t, n, m, riskFactors) {
             let treatments = [];
-            const tNum = parseInt(t.replace(/\D/g, '')) || 0;
-            const nNum = parseInt(n.replace(/\D/g, '')) || 0;
+            const tNum = parseInt(t.replace(/\D/g,'')) || 0;
+            const siteNames = {
+                'oral': '口腔癌 (OR-1, OR-2)',
+                'oropharynx': '口咽癌 p16+ (ORPH-1, ORPHPV-1)',
+                'oropharynx_hpvneg': '口咽癌 p16- (ORPH-1, ORPH-2)',
+                'hypopharynx': '下咽癌 (HYPO-1, HYPO-2)',
+                'larynx_glot': '聲門癌 (GLOT-1, GLOT-2)',
+                'larynx_supra': '聲門上癌 (SUPRA-1, SUPRA-2)',
+                'nasopharynx': '鼻咽癌 (NASO-1, NASO-2)'
+            };
+            const refUrl = 'https://www.nccn.org/professionals/head_and_neck.pdf';
             
-            // 口腔癌
             if (site === 'oral') {
                 if (n === '0' && tNum <= 2) {
-                    treatments.push({ title: '首選手術治療', items: [
-                        '手術切除原發灶 ± 頸部淋巴結清除',
-                        '或根治性放療 (RT)',
-                        '若無法手術'
-                    ]});
+                    treatments.push({ 
+                        title: '首選手術治療', 
+                        items: ['手術切除原發灶 ± 頸部淋巴結清除', '或根治性放療 (RT)', '若無法手術'],
+                        ref: 'OR-1: T1-2 N0 治療流程'
+                    });
                 } else if (n === '0' && t === '3') {
-                    treatments.push({ title: '首選手術治療', items: [
-                        '手術切除 + 頸部淋巴結清除',
-                        '術後輔助放療或放化療'
-                    ]});
+                    treatments.push({ 
+                        title: '首選手術治療', 
+                        items: ['手術切除 + 頸部淋巴結清除', '術後輔助放療或放化療'],
+                        ref: 'OR-1: T3 N0 治療流程'
+                    });
                 } else {
-                    treatments.push({ title: '首選手術治療', items: [
-                        '手術切除原發灶 + 頸部淋巴結清除',
-                        '術後輔助放療或放化療'
-                    ]});
+                    treatments.push({ 
+                        title: '首選手術治療', 
+                        items: ['手術切除原發灶 + 頸部淋巴結清除', '術後輔助放療或放化療'],
+                        ref: 'OR-1: T1-4a N1-3 治療流程'
+                    });
                 }
                 
-                // 術後輔助治療
                 if (riskFactors.includes('extracapsular') || riskFactors.includes('positive_margin')) {
-                    treatments.push({ title: '術後輔助治療 (Category 1)', items: [
-                        '放化療 (CRT) - 強烈建議',
-                        '參考: SYST-A 原則'
-                    ]});
+                    treatments.push({ 
+                        title: '術後輔助治療 (Category 1)', 
+                        items: ['放化療 (CRT) - 強烈建議', '參考: SYST-A 原則'],
+                        ref: 'OR-2: Adverse pathologic features'
+                    });
                 } else if (riskFactors.includes('n2_n3') || riskFactors.includes('pt3_pt4') || riskFactors.length > 0) {
-                    treatments.push({ title: '術後輔助治療', items: [
-                        '考慮放療 ± 順鉑同步化療',
-                        '高風險因素: ENE, positive margins, pN2-N3'
-                    ]});
+                    treatments.push({ 
+                        title: '術後輔助治療', 
+                        items: ['考慮放療 ± 順鉑同步化療', '高風險因素: ENE, positive margins, pN2-N3'],
+                        ref: 'OR-2: Adjuvant treatment'
+                    });
                 }
             }
             
-            // 口咽癌 p16+
             if (site === 'oropharynx') {
                 if (tNum <= 2 && (n === '0' || n === '1')) {
-                    treatments.push({ title: '早期 (I-II期)', items: [
-                        '手術切除 ± 頸部淋巴結清除',
-                        '或根治性放療',
-                        'HPV+ 預後較佳'
-                    ]});
+                    treatments.push({ 
+                        title: '早期 (I-II期)', 
+                        items: ['手術切除 ± 頸部淋巴結清除', '或根治性放療', 'HPV+ 預後較佳'],
+                        ref: 'ORPHPV-1: p16+ T1-2 N0-1'
+                    });
                 } else {
-                    treatments.push({ title: '局部晚期 (III-IV期)', items: [
-                        '根治性放化療 (CRT)',
-                        '或手術 + 術後輔助治療',
-                        'De-escalation 治療正在臨床試驗中 (Category 2B)'
-                    ]});
+                    treatments.push({ 
+                        title: '局部晚期 (III-IV期)', 
+                        items: ['根治性放化療 (CRT)', '或手術 + 術後輔助治療', 'De-escalation 治療正在臨床試驗中 (Category 2B)'],
+                        ref: 'ORPHPV-2: p16+ 治療建議'
+                    });
                 }
             }
             
-            // 下咽癌
             if (site === 'hypopharynx') {
-                treatments.push({ title: '治療原則', items: [
-                    '手術為主 + 頸部淋巴結清除',
-                    '術後放療或放化療',
-                    '若無法手術: 根治性放化療'
-                ]});
+                treatments.push({ 
+                    title: '治療原則', 
+                    items: ['手術為主 + 頸部淋巴結清除', '術後放療或放化療', '若無法手術: 根治性放化療'],
+                    ref: 'HYPO-1, HYPO-2'
+                });
             }
             
-            // 喉癌
             if (site === 'larynx_glot') {
                 if (t === '1' || t === '2') {
-                    treatments.push({ title: '早期聲門癌 (I-II期)', items: [
-                        '雷射手術 (首選)',
-                        '或根治性放療',
-                        '開放式手術'
-                    ]});
+                    treatments.push({ 
+                        title: '早期聲門癌 (I-II期)', 
+                        items: ['雷射手術 (首選)', '或根治性放療', '開放式手術'],
+                        ref: 'GLOT-1: T1-2 N0'
+                    });
                 } else {
-                    treatments.push({ title: '晚期聲門癌 (III-IV期)', items: [
-                        '全喉切除術 + 術後放療',
-                        '或根治性放化療 (保留喉嚨)'
-                    ]});
+                    treatments.push({ 
+                        title: '晚期聲門癌 (III-IV期)', 
+                        items: ['全喉切除術 + 術後放療', '或根治性放化療 (保留喉嚨)'],
+                        ref: 'GLOT-1: T3-4 治療'
+                    });
                 }
             }
             
-            // 鼻咽癌
             if (site === 'nasopharynx') {
-                treatments.push({ title: '治療原則', items: [
-                    '同步放化療 (CRT) + 輔助化療',
-                    '誘導化療 + 同步放化療',
-                    '免疫治療 (PD-1 抑制劑) 用於復發/轉移'
-                ]});
+                treatments.push({ 
+                    title: '治療原則', 
+                    items: ['同步放化療 (CRT) + 輔助化療', '誘導化療 + 同步放化療', '免疫治療 (PD-1 抑制劑) 用於復發/轉移'],
+                    ref: 'NASO-1, NASO-B'
+                });
             }
             
-            // 晚期/轉移
             if (m === '1') {
-                treatments.push({ title: '轉移性疾病 (IV C)', items: [
-                    '系統治療為主',
-                    '免疫治療 (Pembrolizumab, Nivolumab)',
-                    '化學治療',
-                    '臨床試驗',
-                    '參考 SYST-A 原則'
-                ]});
+                treatments.push({ 
+                    title: '轉移性疾病 (IV C)', 
+                    items: ['系統治療為主', '免疫治療 (Pembrolizumab, Nivolumab)', '化學治療', '臨床試驗', '參考 SYST-A 原則'],
+                    ref: 'ADV-1, SYST-A'
+                });
             }
             
-            // 危險因子警告
             if (riskFactors.includes('extracapsular')) {
-                treatments.push({ title: '⚠️ 包膜外侵犯 (ENE) 警告', items: [
-                    '高度建議術後放化療 (Category 1)',
-                    '預後較差'
-                ], warning: true });
+                treatments.push({ 
+                    title: '⚠️ 包膜外侵犯 (ENE) 警告', 
+                    items: ['高度建議術後放化療 (Category 1)', '預後較差'],
+                    ref: 'OR-2 footnote m'
+                });
             }
             
             if (riskFactors.includes('positive_margin')) {
-                treatments.push({ title: '⚠️ 切緣陽性 警告', items: [
-                    '建議再次手術切除',
-                    '若無法切除: 術後放化療'
-                ], warning: true });
+                treatments.push({ 
+                    title: '⚠️ 切緣陽性 警告', 
+                    items: ['建議再次手術切除', '若無法切除: 術後放化療'],
+                    ref: 'OR-2'
+                });
             }
             
-            return treatments.map(t => `
-                <div class="treatment" style="${t.warning ? 'border-left-color: #ff5252; background: rgba(255,82,82,0.15);' : ''}">
-                    <h3>${t.title}</h3>
-                    ${t.items.map(i => `<p>• ${i}</p>`).join('')}
-                </div>
-            `).join('');
+            return treatments.map(t => {
+                const warningStyle = t.title.includes('⚠️') ? 'border-left-color: #ff5252; background: rgba(255,82,82,0.15);' : '';
+                return '<div class="treatment" style="' + warningStyle + '"><h3>' + t.title + '</h3>' + 
+                    t.items.map(i => '<p>• ' + i + '</p>').join('') + 
+                    '<div class="treatment-ref">📖 參考: ' + t.ref + '</div></div>';
+            }).join('');
         }
     </script>
 </body>
