@@ -322,7 +322,7 @@ function getTx(site, t, n, m, rf) {
     
     // 口咽癌 p16+
     if (site === 'oropharynx_hpv') {
-        r.push({t:'📖 TNM分期', i:['p16+ 口咽癌使用不同分期系統','參考 ST-7'],ref:'ST-7',type:'info',page:'PDF: ST-7 (p.135)'});
+        r.push({t:'📖 TNM分期', i:['p16+ 口咽癌使用不同分期系統','參考 ST-7'],ref:'ST-7',type:'info',page:'PDF: ST-7 (p.135)'},\n            url: 'https://nccnkiritu.zeabur.app/?page=135');
         
         if (tn <= 2 && (n === '0' || n === '1')) {
             r.push({t:'🔬 早期 (I-II期)', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPHPV-1',type:'surgery',page:'PDF: ORPHPV-1 (p.21)'});
