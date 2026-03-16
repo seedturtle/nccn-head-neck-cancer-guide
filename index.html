@@ -375,12 +375,12 @@ function getTx(site, t, n, m, rf) {
     // 鼻咽癌
     if (site === 'nasopharynx') {
         r.push({t:'🔬 治療', i:['同步放化療 + 輔助化療','(順鉑為主)'],ref:'NASO-1',type:'rt',page:'PDF: NASO-1 (p.44)'});
-        r.push({t:'📋 復發/轉移', i:['免疫治療','化學治療','臨床試驗'],ref:'NASO-B',type:'info',page:'PDF: NASO-B'});
+        r.push({t:'📋 復發/轉移', i:['免疫治療','化學治療','臨床試驗'],ref:'NASO-B',type:'info',page:'PDF: NASO-B (p.40)'});
     }
     
     // 轉移
     if (m === '1') {
-        r.push({t:'⚠️ 轉移性疾病 (IV C)', i:['系統治療為主','免疫治療','臨床試驗'],ref:'ADV-1',type:'warning',page:'PDF: ADV-1'});
+        r.push({t:'⚠️ 轉移性疾病 (IV C)', i:['系統治療為主','免疫治療','臨床試驗'],ref:'ADV-1',type:'warning',page:'PDF: ADV-1 (p.70)'});
     }
     
     // 加入 NCCN 連結
