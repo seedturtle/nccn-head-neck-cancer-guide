@@ -148,6 +148,10 @@ const tOptions = {
     hpv_pos: {
         c: [['','cT - 請選擇...' ],['1','cT1 ≤2cm (ST-6)'],['2','cT2 >2-4cm (ST-6)'],['3','cT3 >4cm或侵犯會厭舌面 (ST-6)'],['4','cT4 侵犯喉/舌肌/翼突等 (ST-6)']],
         p: [['','pT - 請選擇...' ],['1','pT1 ≤2cm'],['2','pT2 >2-4cm'],['3','pT3 >4cm'],['4','pT4 侵犯鄰近結構']]
+    },
+    nasopharynx: {
+        c: [['','cT - 請選擇...' ],['1','cT1 局限鼻咽部/口咽/鼻腔'],['2','cT2 侵犯咽旁間隙'],['3','cT3 侵犯顱底/鼻竇'],['4','cT4 侵犯顱內/腦神經/眼眶']],
+        p: [['','pT - 請選擇...' ],['1','pT1 局限鼻咽部'],['2','pT2 侵犯咽旁間隙'],['3','pT3 侵犯顱底'],['4','pT4 侵犯顱內']]
     }
 };
 
@@ -159,15 +163,20 @@ const nOptions = {
     hpv_pos: {
         c: [['','cN - 請選擇...' ],['0','cN0 無淋巴結 (ST-7)'],['1','cN1 單側/多側 ≤6cm (ST-7)'],['2','cN2 對側/雙側 ≤6cm (ST-7)'],['3','cN3 >6cm (ST-7)']],
         p: [['','pN - 請選擇...' ],['0','pN0 無淋巴結 (ST-7)'],['1','pN1 ≤4 顆淋巴結 (ST-7)'],['2','pN2 >4 顆淋巴結 (ST-7)']]
+    },
+    nasopharynx: {
+        c: [['','cN - 請選擇...' ],['0','cN0 無淋巴結'],['1','cN1 單側≤6cm'],['2','cN2 雙側≤6cm'],['3','cN3 >6cm/鎖骨上窩']],
+        p: [['','pN - 請選擇...' ],['0','pN0 無淋巴結'],['1','pN1 單側≤6cm'],['2','pN2 雙側≤6cm'],['3','pN3 >6cm']]
     }
 };
 
 function updateTNOptions() {
     const site = document.getElementById('site').value;
     const isHPV = (site === 'oropharynx_hpv');
+    const isNPC = (site === 'nasopharynx');
     
-    const tOpt = isHPV ? tOptions.hpv_pos : tOptions.standard;
-    const nOpt = isHPV ? nOptions.hpv_pos : nOptions.standard;
+    const tOpt = isHPV ? tOptions.hpv_pos : (isNPC ? tOptions.nasopharynx : tOptions.standard);
+    const nOpt = isHPV ? nOptions.hpv_pos : (isNPC ? nOptions.nasopharynx : nOptions.standard);
     
     ['t_c','t_p'].forEach(id => {
         const sel = document.getElementById(id);
@@ -265,6 +274,21 @@ function getStage(site, t, n, m) {
         if (n === '0' && tn === 1) return 'I';
         if (n === '0' && tn === 2) return 'II';
         if (n === '0' && tn === 3) return 'III';
+        return 'IV';
+    }
+    
+    // 鼻咽癌分期 (不同於其他頭頸癌)
+    if (site === 'nasopharynx') {
+        // Stage I: T1 N0 M0
+        if (t === '1' && n === '0') return 'I';
+        // Stage II: T0,T1,T2 N0,N1 M0
+        if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) return 'II';
+        // Stage III: T0,T1,T2 N2 M0, T3 N0-2 M0
+        if ((t === '0' || t === '1' || t === '2') && n === '2') return 'III';
+        if (t === '3' && (n === '0' || n === '1' || n === '2')) return 'III';
+        // Stage IV: T4 Any N M0, Any T N3 M0
+        if (t === '4') return 'IVA';
+        if (n === '3') return 'IVB';
         return 'IV';
     }
     
