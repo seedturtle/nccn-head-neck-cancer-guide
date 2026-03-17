@@ -152,6 +152,14 @@ const tOptions = {
     nasopharynx: {
         c: [['','cT - 請選擇...' ],['1','cT1 局限鼻咽部/口咽/鼻腔'],['2','cT2 侵犯咽旁間隙'],['3','cT3 侵犯顱底/鼻竇'],['4','cT4 侵犯顱內/腦神經/眼眶']],
         p: [['','pT - 請選擇...' ],['1','pT1 局限鼻咽部'],['2','pT2 侵犯咽旁間隙'],['3','pT3 侵犯顱底'],['4','pT4 侵犯顱內']]
+    },
+    larynx_glot: {  // 聲門癌
+        c: [['','cT - 請選擇...' ],['1','cT1 局限單側/雙側聲帶'],['2','cT2 侵犯聲門上/下區/聲帶固定'],['3','cT3 聲帶固定'],['4','cT4 侵犯甲狀軟骨/超出喉部']],
+        p: [['','pT - 請選擇...' ],['1','pT1 局限單側/雙側聲帶'],['2','pT2 侵犯聲門上/下區/聲帶固定'],['3','pT3 聲帶固定'],['4','pT4 侵犯甲狀軟骨/超出喉部']]
+    },
+    larynx_supra: {  // 聲門上癌
+        c: [['','cT - 請選擇...' ],['1','cT1 局限單一亞區'],['2','cT2 侵犯多個亞區'],['3','cT3 聲帶固定'],['4','cT4 侵犯甲狀軟骨/超出喉部']],
+        p: [['','pT - 請選擇...' ],['1','pT1 局限單一亞區'],['2','pT2 侵犯多個亞區'],['3','pT3 聲帶固定'],['4','pT4 侵犯甲狀軟骨/超出喉部']]
     }
 };
 
@@ -175,7 +183,9 @@ function updateTNOptions() {
     const isHPV = (site === 'oropharynx_hpv');
     const isNPC = (site === 'nasopharynx');
     
-    const tOpt = isHPV ? tOptions.hpv_pos : (isNPC ? tOptions.nasopharynx : tOptions.standard);
+    const isGlottic = (site === 'larynx_glot');
+    const isSupra = (site === 'larynx_supra');
+    const tOpt = isHPV ? tOptions.hpv_pos : (isNPC ? tOptions.nasopharynx : (isGlottic ? tOptions.larynx_glot : (isSupra ? tOptions.larynx_supra : tOptions.standard)));
     const nOpt = isHPV ? nOptions.hpv_pos : (isNPC ? nOptions.nasopharynx : nOptions.standard);
     
     ['t_c','t_p'].forEach(id => {
@@ -292,9 +302,25 @@ function getStage(site, t, n, m) {
         return 'IV';
     }
     
-    if (site === 'larynx_glot' || site === 'larynx_supra') {
-        if (n === '0') { if (t === 'is') return '0'; if (tn === 1) return 'I'; if (tn === 2) return 'II'; if (tn === 3) return 'III'; }
-        return 'IV';
+    // 聲門癌分期
+    if (site === 'larynx_glot') {
+        if (n === '0') {
+            if (t === 'is') return '0';     // 原位癌
+            if (t === '1') return 'I';      // T1 N0
+            if (t === '2') return 'II';     // T2 N0
+            if (t === '3') return 'III';    // T3 N0
+        }
+        return 'IV';  // T4 或有淋巴結轉移
+    }
+    
+    // 聲門上癌分期
+    if (site === 'larynx_supra') {
+        if (n === '0') {
+            if (t === '1') return 'I';      // T1 N0
+            if (t === '2') return 'II';     // T2 N0
+            if (t === '3') return 'III';    // T3 N0
+        }
+        return 'IV';  // T4 或有淋巴結轉移
     }
     
     if (site === 'nasopharynx') {
