@@ -442,9 +442,9 @@ function getTx(site, t, n, m, rf) {
             if (rf.length === 0) {
                 r.push({t:'✅ 術後追蹤', i:['無需輔助治療','定期追蹤 (FOLL-A)'],ref:'OR-1',type:'info',page:'PDF: OR-1 (p.12)'});
             } else if (rf.includes('ENE') || rf.includes('posMargin')) {
-                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['同步放化療 (CRT) - 強烈建議','使用順鉑'],ref:'OR-2',type:'warning',page:'PDF: OR-2 (p.672)'});
+                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['同步放化療 (CRT) - 強烈建議','使用順鉑'],ref:'OR-2',type:'warning',page:'PDF: OR-2 (p.13)'});
             } else {
-                r.push({t:'📋 術後輔助治療', i:['考慮放療 ± 順鉑'],ref:'OR-2',type:'rt',page:'PDF: OR-2 (p.672)'});
+                r.push({t:'📋 術後輔助治療', i:['考慮放療 ± 順鉑'],ref:'OR-2',type:'rt',page:'PDF: OR-2 (p.13)'});
             }
         }
     }
