@@ -283,12 +283,12 @@ function getStage(site, t, n, m) {
         // ST-7 臨床分期 (AJCC 8th)
         // Stage I: T0,T1,T2 + N0,N1
         if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) return 'I';
-        // Stage II: T0,T1,T2 + N2
+        // Stage II: T3 + Any N, 或 T0-2 + N2
+        if (t === '3') return 'II';
         if ((t === '0' || t === '1' || t === '2') && n === '2') return 'II';
-        // Stage III: T3 + N0-2, 或 T0-2 + N3, 或 T4 + Any N
-        if (t === '3' && (n === '0' || n === '1' || n === '2')) return 'III';
-        if ((t === '0' || t === '1' || t === '2') && n === '3') return 'III';
+        // Stage III: T4 + Any N, 或 Any T + N3
         if (t === '4') return 'III';
+        if (n === '3') return 'III';
         // Stage IV: M1 已經在上面處理
         return 'IV';
     }
