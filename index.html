@@ -280,16 +280,16 @@ function getStage(site, t, n, m) {
     const tn = parseInt(t.replace(/\D/g,'')) || 0;
     
     if (site === 'oropharynx_hpv') {
-        // ST-7 臨床分期 (AJCC 8th)
+        // ST-7 臨床分期 (AJCC 8th) - HPV+ 口咽癌
         // Stage I: T0,T1,T2 + N0,N1
         if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) return 'I';
-        // Stage II: T3 + Any N, 或 T0-2 + N2
-        if (t === '3') return 'II';
+        // Stage II: T0,T1,T2 + N2, 或 T3 + N0,N1,N2
         if ((t === '0' || t === '1' || t === '2') && n === '2') return 'II';
-        // Stage III: T4 + Any N, 或 Any T + N3
+        if (t === '3' && (n === '0' || n === '1' || n === '2')) return 'II';
+        // Stage III: T0-3 + N3, 或 T4 + Any N
+        if ((t === '0' || t === '1' || t === '2' || t === '3') && n === '3') return 'III';
         if (t === '4') return 'III';
-        if (n === '3') return 'III';
-        // Stage IV: M1 已經在上面處理
+        // Stage IV: M1
         return 'IV';
     }
     
@@ -309,16 +309,37 @@ function getStage(site, t, n, m) {
     }
     
     if (site === 'oral') {
+        // 口腔癌分期 (ST-2)
         if (t === 'is') return '0';
-        if (n === '0') { if (tn <= 2) return 'I'; if (tn === 3) return 'II'; return 'III'; }
-        if (n === '1' || n === '2a' || n === '2b') return 'III';
-        return 'IVA';
+        // Stage I: T1 N0, T2 N0
+        if ((t === '1' || t === '2') && n === '0') return 'I';
+        // Stage II: T1-2 N1
+        if ((t === '1' || t === '2') && (n === '1' || n === '2a' || n === '2b' || n === '2c')) return 'II';
+        // Stage III: T3 N0, T3 N1
+        if (t === '3' && (n === '0' || n === '1' || n === '2a' || n === '2b' || n === '2c')) return 'III';
+        // Stage IVA: T1-4a N2
+        if ((t === '1' || t === '2' || t === '3' || t === '4a') && (n === '2a' || n === '2b' || n === '2c')) return 'IVA';
+        // Stage IVB: Any T N3, T4b Any N
+        if (t === '4b') return 'IVB';
+        if (n === '3') return 'IVB';
+        // Stage IVC: M1
+        return 'IV';
     }
     
     if (site === 'hypopharynx') {
-        if (n === '0' && tn === 1) return 'I';
-        if (n === '0' && tn === 2) return 'II';
-        if (n === '0' && tn === 3) return 'III';
+        // 下咽癌分期 (ST-4)
+        // Stage I: T1 N0, T2 N0
+        if ((t === '1' || t === '2') && n === '0') return 'I';
+        // Stage II: T3 N0
+        if (t === '3' && n === '0') return 'II';
+        // Stage III: T1-3 N1, T1-3 N2
+        if ((t === '1' || t === '2' || t === '3') && (n === '1' || n === '2a' || n === '2b' || n === '2c')) return 'III';
+        // Stage IVA: T4a N2
+        if (t === '4a' && (n === '2a' || n === '2b' || n === '2c')) return 'IVA';
+        // Stage IVB: T4b Any N, Any T N3
+        if (t === '4b') return 'IVB';
+        if (n === '3') return 'IVB';
+        // Stage IVC: M1
         return 'IV';
     }
     
@@ -339,29 +360,52 @@ function getStage(site, t, n, m) {
     
     // 聲門癌分期
     if (site === 'larynx_glot') {
-        if (n === '0') {
-            if (t === 'is') return '0';     // 原位癌
-            if (t === '1') return 'I';      // T1 N0
-            if (t === '2') return 'II';     // T2 N0
-            if (t === '3') return 'III';    // T3 N0
-        }
-        return 'IV';  // T4 或有淋巴結轉移
+        // 喉癌分期 (ST-10)
+        if (t === 'is') return '0';
+        // Stage I: T1 N0
+        if (t === '1' && n === '0') return 'I';
+        // Stage II: T2 N0
+        if (t === '2' && n === '0') return 'II';
+        // Stage III: T3 N0, T1-3 N1
+        if ((t === '3' && n === '0') || ((t === '1' || t === '2' || t === '3') && (n === '1' || n === '2a' || n === '2b' || n === '2c'))) return 'III';
+        // Stage IVA: T1-4a N2
+        if ((t === '1' || t === '2' || t === '3' || t === '4a') && (n === '2a' || n === '2b' || n === '2c')) return 'IVA';
+        // Stage IVB: Any T N3, T4b Any N
+        if (t === '4b' || n === '3') return 'IVB';
+        // Stage IVC: M1
+        return 'IV';
     }
     
     // 聲門上癌分期
     if (site === 'larynx_supra') {
-        if (n === '0') {
-            if (t === '1') return 'I';      // T1 N0
-            if (t === '2') return 'II';     // T2 N0
-            if (t === '3') return 'III';    // T3 N0
-        }
-        return 'IV';  // T4 或有淋巴結轉移
+        // 喉癌分期 (ST-10)
+        // Stage I: T1 N0
+        if (t === '1' && n === '0') return 'I';
+        // Stage II: T2 N0
+        if (t === '2' && n === '0') return 'II';
+        // Stage III: T3 N0, T1-3 N1
+        if ((t === '3' && n === '0') || ((t === '1' || t === '2' || t === '3') && (n === '1' || n === '2a' || n === '2b' || n === '2c'))) return 'III';
+        // Stage IVA: T1-4a N2
+        if ((t === '1' || t === '2' || t === '3' || t === '4a') && (n === '2a' || n === '2b' || n === '2c')) return 'IVA';
+        // Stage IVB: Any T N3, T4b Any N
+        if (t === '4b' || n === '3') return 'IVB';
+        // Stage IVC: M1
+        return 'IV';
     }
     
     if (site === 'nasopharynx') {
-        if (n === '0' && tn === 1) return 'I';
-        if (n === '1') return 'II';
-        if (n === '2') return 'III';
+        // 鼻咽癌分期 (ST-12, 9th ed.)
+        // Stage I: T1 N0
+        if (t === '1' && n === '0') return 'I';
+        // Stage II: T0-2 N0-1
+        if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) return 'II';
+        // Stage III: T0-2 N2, T3 N0-2
+        if ((t === '0' || t === '1' || t === '2') && (n === '2a' || n === '2b' || n === '2c' || n === '2')) return 'III';
+        if (t === '3' && (n === '0' || n === '1' || n === '2' || n === '2a' || n === '2b' || n === '2c')) return 'III';
+        // Stage IVA: T4 Any N, Any T N3
+        if (t === '4') return 'IVA';
+        if (n === '3') return 'IVB';
+        // Stage IVC: M1
         return 'IV';
     }
     return '-';
