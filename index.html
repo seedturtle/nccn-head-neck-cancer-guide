@@ -345,19 +345,25 @@ function getStage(site, t, n, m) {
         return 'IV';
     }
     
-    // 鼻咽癌分期 (不同於其他頭頸癌)
+    // 鼻咽癌分期 - 第八版與第九版
     if (site === 'nasopharynx') {
-        // Stage I: T1 N0 M0
-        if (t === '1' && n === '0') return 'I';
-        // Stage II: T0,T1,T2 N0,N1 M0
-        if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) return 'II';
-        // Stage III: T0,T1,T2 N2 M0, T3 N0-2 M0
-        if ((t === '0' || t === '1' || t === '2') && n === '2') return 'III';
-        if (t === '3' && (n === '0' || n === '1' || n === '2')) return 'III';
-        // Stage IV: T4 Any N M0, Any T N3 M0
-        if (t === '4') return 'IVA';
-        if (n === '3') return 'IVB';
-        return 'IV';
+        // 第八版 (ST-12)
+        let stage8 = 'IV';
+        if (t === '1' && n === '0') stage8 = 'I';
+        else if ((t === '0' || t === '1' || t === '2') && n === '0') stage8 = 'I';
+        else if ((t === '0' || t === '1' || t === '2') && n === '1') stage8 = 'II';
+        else if (t === '3' && n === '0') stage8 = 'II';
+        else if ((t === '0' || t === '1' || t === '2') && (n === '2' || n === '2a' || n === '2b' || n === '2c')) stage8 = 'III';
+        else if (t === '3' && (n === '1' || n === '2' || n === '2a' || n === '2b' || n === '2c')) stage8 = 'III';
+        
+        // 第九版
+        let stage9 = 'IV';
+        if (t === '1' && n === '0') stage9 = 'I';
+        else if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) stage9 = 'II';
+        else if ((t === '0' || t === '1' || t === '2') && (n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
+        else if (t === '3' && (n === '0' || n === '1' || n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
+        
+        return stage8 + ' (第八版) / ' + stage9 + ' (第九版)';
     }
     
     // 聲門癌分期
