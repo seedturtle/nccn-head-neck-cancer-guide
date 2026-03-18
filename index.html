@@ -510,6 +510,12 @@ function getTx(site, t, n, m, rf) {
     if (site === 'nasopharynx') {
         r.push({t:'🔬 治療', i:['同步放化療 + 輔助化療','(順鉑為主)'],ref:'NASO-1',type:'rt',page:'PDF: NASO-1 (p.36)'});
         r.push({t:'📋 復發/轉移', i:['免疫治療','化學治療','臨床試驗'],ref:'NASO-B',type:'info',page:'PDF: NASO-B (p.40)'});
+        
+        // 鼻咽癌分期對照（第八版 vs 第九版）
+        r.push({t:'📖 TNM分期對照', i:[
+            '第八版 (ST-12): Stage I=T1N0, II=T0-2N0, III=T0-2N1-2/T3N0-2, IVA=T4N0-2, IVB=N3',
+            '第九版: Stage I=T1N0, II=T0-2N0-1, III=T0-2N2/T3N0-2, IVA=T4N0-2, IVB=N3'
+        ],ref:'第八版 ST-12 / 第九版圖',type:'info',page:'PDF: ST-12 (p.140)'});
     }
     
     // 轉移
