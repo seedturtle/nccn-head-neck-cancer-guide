@@ -518,8 +518,10 @@ function getTx(site, t, n, m, rf) {
         
         // 鼻咽癌分期對照（第八版 vs 第九版）
         r.push({t:'📖 TNM分期對照', i:[
-            '第八版 (ST-12): Stage I=T1N0, II=T0-2N0, III=T0-2N1-2/T3N0-2, IVA=T4N0-2, IVB=N3',
-            '第九版: Stage I=T1N0, II=T0-2N0-1, III=T0-2N2/T3N0-2, IVA=T4N0-2, IVB=N3'
+            '第八版 Clinical: Stage I=T1N0, II=T0-2N0, III=T0-2N1-2/T3N0-2, IVA=T4N0-2, IVB=N3',
+            '第八版 Pathological: 與 Clinical 相同',
+            '第九版 Clinical: Stage I=T1N0, II=T0-2N0-1, III=T0-2N2/T3N0-2, IVA=T4N0-2, IVB=N3',
+            '第九版 Pathological: Stage I=T1N0, II=T0-2N0-1, III=T3N0-2, IVA=T4N0-2'
         ],ref:'第八版 ST-12 / 第九版圖',type:'info',page:'PDF: ST-12 (p.140)'});
     }
     
