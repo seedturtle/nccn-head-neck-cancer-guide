@@ -293,14 +293,13 @@ function getStage(site, t, n, m) {
     }
     
     if (site === 'oropharynx_hpvneg') {
-        // 根據 ST-4 標準分期
-        // Stage I: T1-2 N0
+        // 根據 ST-4 標準分期 (AJCC 8th)
+        // Stage I: T1 N0, T2 N0
         if ((t === '1' || t === '2') && n === '0') return 'I';
-        // Stage II: T1-2 N1, T3 N0
-        if ((t === '1' || t === '2') && (n === '1' || n === '2a' || n === '2b' || n === '2c')) return 'II';
+        // Stage II: T3 N0
         if (t === '3' && n === '0') return 'II';
-        // Stage III: T1-3 N2
-        if ((t === '1' || t === '2' || t === '3') && (n === '2a' || n === '2b' || n === '2c')) return 'III';
+        // Stage III: T1-3 N1, T1-3 N2
+        if ((t === '1' || t === '2' || t === '3') && (n === '1' || n === '2a' || n === '2b' || n === '2c')) return 'III';
         // Stage IV: T4 any N, any T N3
         if (t === '4') return 'IVA';
         if (n === '3') return 'IVB';
