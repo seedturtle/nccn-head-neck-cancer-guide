@@ -358,8 +358,10 @@ function getStage(site, t, n, m) {
         
         // 第九版
         let stage9 = 'IV';
-        if (t === '1' && n === '0') stage9 = 'I';
-        else if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) stage9 = 'II';
+        if (t === '1' && n === '0') stage9 = 'IA';
+        else if ((t === '0' || t === '1' || t === '2') && n === '0') stage9 = 'IA';
+        else if ((t === '0' || t === '1' || t === '2') && n === '1') stage9 = 'IB';
+        else if ((t === '0' || t === '1' || t === '2') && n === '2') stage9 = 'II';
         else if ((t === '0' || t === '1' || t === '2') && (n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
         else if (t === '3' && (n === '0' || n === '1' || n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
         
@@ -414,8 +416,10 @@ function getStage(site, t, n, m) {
         
         // 第九版
         let stage9 = 'IV';
-        if (t === '1' && n === '0') stage9 = 'I';
-        else if ((t === '0' || t === '1' || t === '2') && (n === '0' || n === '1')) stage9 = 'II';
+        if (t === '1' && n === '0') stage9 = 'IA';
+        else if ((t === '0' || t === '1' || t === '2') && n === '0') stage9 = 'IA';
+        else if ((t === '0' || t === '1' || t === '2') && n === '1') stage9 = 'IB';
+        else if ((t === '0' || t === '1' || t === '2') && n === '2') stage9 = 'II';
         else if ((t === '0' || t === '1' || t === '2') && (n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
         else if (t === '3' && (n === '0' || n === '1' || n === '2' || n === '2a' || n === '2b' || n === '2c')) stage9 = 'III';
         
