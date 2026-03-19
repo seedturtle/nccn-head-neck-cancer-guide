@@ -474,11 +474,15 @@ function getTx(site, t, n, m, rf) {
         '第九版 Clinical: Stage I=T0-2N0-1, II=T0-2N2, III=T0-3N3/T4, IV=M1',
         '第九版 Pathological: Stage I=T0-2N0-1, II=T0-2N2, III=T3-4 any N, IV=M1'
     ],ref:'第八版 ST-7 / 第九版圖',type:'info',page:'PDF: ST-7 (p.135)'});
-        if (tn <= 2 && (n === '0' || n === '1')) {
+        
+        // 早期 (I-II期): T1-2 N0-1
+        if ((t === '1' || t === '2' || t === '0') && (n === '0' || n === '1')) {
             r.push({t:'🔬 早期 (I-II期)', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPHPV-1',type:'surgery',page:'PDF: ORPHPV-1 (p.21)'});
             r.push({t:'✅ 術後追蹤', i:['若無危險因子，定期追蹤即可'],ref:'ORPHPV-1',type:'info',page:'PDF: ORPHPV-1 (p.21)'});
-        } else {
-            r.push({t:'🔬 局部晚期 (III-IV期)', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助治療'],ref:'ORPHPV-2 (p.18))'});
+        } 
+        // 局部晚期 (III-IV期): T3-4 any N, any T N2-3
+        else if (t === '3' || t === '4' || n === '2' || n === '3') {
+            r.push({t:'🔬 局部晚期 (III-IV期)', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助治療'],ref:'ORPHPV-2',type:'rt',page:'PDF: ORPHPV-2 (p.22)'});
         }
         
         if (isP && hasPathology) {
