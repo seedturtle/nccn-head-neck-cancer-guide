@@ -260,15 +260,22 @@ function calc() {
     const n = n_p || n_c;
     const m = document.getElementById('m').value;
     
-    if (!site || !t) { alert('請選擇腫瘤部位和分期'); return; }
+    if (!site || !t || !n) { alert('請選擇腫瘤部位和 TN 分期'); return; }
     
-    // 確保 TN 選項是針對當前 site 的正確選項
-    const currentSite = document.getElementById('site').value;
+    // 確保 TN 選項已針對當前 site 更新
     const tSel = document.getElementById('t_c');
     const nSel = document.getElementById('n_c');
-    // 如果當前選項不適用於當前 site，重新整理選項
-    if (currentSite && (tSel.options.length < 3 || nSel.options.length < 3)) {
+    const mSel = document.getElementById('m');
+    
+    // 檢查並修正 TN 選項（防止殘留值）
+    const needsUpdate = tSel.options.length < 3 || nSel.options.length < 3;
+    if (needsUpdate) {
         updateTNOptions();
+        // 恢復選中的值
+        document.getElementById('t_c').value = t_c;
+        document.getElementById('t_p').value = t_p;
+        document.getElementById('n_c').value = n_c;
+        document.getElementById('n_p').value = n_p;
     }
     
     const rf = [];
