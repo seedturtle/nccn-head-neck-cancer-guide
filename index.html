@@ -262,6 +262,9 @@ function calc() {
     
     if (!site || !t || !n) { alert('請選擇腫瘤部位和 TN 分期'); return; }
     
+    // 除錯訊息
+    console.log('DEBUG calc():', {site, t, t_c, t_p, n, n_c, n_p, m, tn});
+    
     // 確保 TN 選項已針對當前 site 更新
     const tSel = document.getElementById('t_c');
     const nSel = document.getElementById('n_c');
@@ -520,6 +523,9 @@ function getTx(site, t, n, m, rf) {
     // 口咽癌 p16-
     if (site === 'oropharynx_hpvneg') {
         r.push({t:'📖 TNM分期', i:['p16- 口咽癌使用標準分期','參考 ST-4'],ref:'ST-4',type:'info',page:'PDF: ST-4 (p.132)'});
+        
+        // 除錯
+        console.log('DEBUG p16- getTx:', {n, tn, condition: n === '0' && tn <= 2});
         
         if (n === '0' && tn <= 2) {
             r.push({t:'🔬 早期', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPH-1',type:'surgery',page:'PDF: ORPH-1 (p.17)'});
