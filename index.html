@@ -512,7 +512,7 @@ function getTx(site, t, n, m, rf) {
         
         if (isP && hasPathology) {
             if (rf.includes('ENE') || rf.includes('posMargin')) {
-                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['RT + pembrolizumab','(若 ENE/positive margin + cisplatin)'],ref:'ORPHPV-2 (p.18))'});
+                r.push({t:'⚠️ 術後輔助 (Category 1)', i:['RT + pembrolizumab','(若 ENE/positive margin + cisplatin)'],ref:'ORPHPV-2',page:'PDF: ORPHPV-2 (p.18)'});
             }
         }
     }
@@ -526,7 +526,7 @@ function getTx(site, t, n, m, rf) {
         if (n === '0' && tn <= 2) {
             r.push({t:'🔬 早期', i:['手術切除 ± 淋巴結清除','或根治性放療'],ref:'ORPH-1',type:'surgery',page:'PDF: ORPH-1 (p.17)'});
         } else {
-            r.push({t:'🔬 局部晚期', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助'],ref:'ORPH-2 (p.18))'});
+            r.push({t:'🔬 局部晚期', i:['根治性同步放化療 (CRT)','或手術 + 術後輔助'],ref:'ORPH-2',page:'PDF: ORPH-2 (p.18)'});
         }
     }
     
