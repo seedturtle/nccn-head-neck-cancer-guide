@@ -263,7 +263,7 @@ function calc() {
     if (!site || !t || !n) { alert('請選擇腫瘤部位和 TN 分期'); return; }
     
     // 除錯訊息
-    console.log('DEBUG calc():', {site, t, t_c, t_p, n, n_c, n_p, m, tn});
+    console.log('DEBUG calc():', {site, t, t_c, t_p, n, n_c, n_p, m});
     
     // 確保 TN 選項已針對當前 site 更新
     const tSel = document.getElementById('t_c');
