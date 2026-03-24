@@ -457,6 +457,7 @@ function getStage(site, t, n, m) {
 }
 
 function getTx(site, t, n, m, rf) {
+    console.log('DEBUG getTx called:', {site, t, n, m, rf});
     let r = [];
     const tn = parseInt(t.replace(/\D/g,'')) || 0;
     const hasPathology = rf.includes('pT3-4') || rf.includes('pN2-3');
@@ -522,6 +523,7 @@ function getTx(site, t, n, m, rf) {
     
     // 口咽癌 p16-
     if (site === 'oropharynx_hpvneg') {
+        console.log('DEBUG getTx oropharynx_hpvneg: n=' + n + ', tn=' + tn);
         r.push({t:'📖 TNM分期', i:['p16- 口咽癌使用標準分期','參考 ST-4'],ref:'ST-4',type:'info',page:'PDF: ST-4 (p.132)'});
         
         // 除錯
