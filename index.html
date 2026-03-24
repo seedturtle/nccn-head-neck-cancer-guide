@@ -90,7 +90,7 @@
         
         <div class="form-group">
             <label>📍 腫瘤部位</label>
-            <select id="site" onchange="updateTNOptions()">
+            <select id="site" onchange="resetAndUpdate()">
                 <option value="">請選擇部位...</option>
                 <option value="oral">口腔 (Oral Cavity)</option>
                 <option value="oropharynx_hpv">口咽 - p16+ (HPV+)</option>
@@ -201,6 +201,15 @@ const nOptions = {
         p: [['','pN - 請選擇...' ],['0','pN0 無淋巴結'],['1','pN1 單側≤6cm'],['2','pN2 雙側≤6cm'],['3','pN3 >6cm']]
     }
 };
+
+function resetAndUpdate() {
+    // 重置 TN 值，避免殘留值造成計算錯誤
+    document.getElementById('t_c').value = '';
+    document.getElementById('t_p').value = '';
+    document.getElementById('n_c').value = '';
+    document.getElementById('n_p').value = '';
+    updateTNOptions();
+}
 
 function updateTNOptions() {
     const site = document.getElementById('site').value;
