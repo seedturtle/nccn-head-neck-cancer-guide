@@ -262,6 +262,15 @@ function calc() {
     
     if (!site || !t) { alert('請選擇腫瘤部位和分期'); return; }
     
+    // 確保 TN 選項是針對當前 site 的正確選項
+    const currentSite = document.getElementById('site').value;
+    const tSel = document.getElementById('t_c');
+    const nSel = document.getElementById('n_c');
+    // 如果當前選項不適用於當前 site，重新整理選項
+    if (currentSite && (tSel.options.length < 3 || nSel.options.length < 3)) {
+        updateTNOptions();
+    }
+    
     const rf = [];
     if (document.getElementById('cb_ene').querySelector('input').checked) rf.push('ENE');
     if (document.getElementById('cb_posmargin').querySelector('input').checked) rf.push('posMargin');
