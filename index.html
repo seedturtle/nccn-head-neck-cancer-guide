@@ -85,7 +85,7 @@
         <div class="pdf-note">
             📄 <strong>NCCN 官網：</strong> 
             <a href="https://www.nccn.org/guidelines/category_1" target="_blank" class="nccn-link">NCCN Guidelines</a>
-            <a href="https://nccnkiritu.zeabur.app" target="_blank" class="nccn-link">Head & Neck PDF</a>
+            <a href="https://nccnhnguideline.zeabur.app" target="_blank" class="nccn-link">Head & Neck PDF</a>
         </div>
         
         <div class="form-group">
@@ -461,13 +461,13 @@ function getTx(site, t, n, m, rf) {
     
     // NCCN 頁面對應表
     const nccnPages = {
-        oral: { tx: 'OR-1', page: 12, url: 'https://nccnkiritu.zeabur.app/?page=12' },
-        oropharynx_hpv: { tx: 'ORPHPV-1', page: 21, url: 'https://nccnkiritu.zeabur.app/?page=21' },
-        oropharynx_hpvneg: { tx: 'ORPH-1', page: 17, url: 'https://nccnkiritu.zeabur.app/?page=17' },
-        hypopharynx: { tx: 'HYPO-1', page: 28, url: 'https://nccnkiritu.zeabur.app/?page=28' },
-        larynx_glot: { tx: 'GLOT-1', page: 44, url: 'https://nccnkiritu.zeabur.app/?page=44' },
-        larynx_supra: { tx: 'SUPRA-1', page: 52, url: 'https://nccnkiritu.zeabur.app/?page=52' },
-        nasopharynx: { tx: 'NASO-1', page: 36, url: 'https://nccnkiritu.zeabur.app/?page=36' }
+        oral: { tx: 'OR-1', page: 12, url: 'https://nccnhnguideline.zeabur.app/?page=12' },
+        oropharynx_hpv: { tx: 'ORPHPV-1', page: 21, url: 'https://nccnhnguideline.zeabur.app/?page=21' },
+        oropharynx_hpvneg: { tx: 'ORPH-1', page: 17, url: 'https://nccnhnguideline.zeabur.app/?page=17' },
+        hypopharynx: { tx: 'HYPO-1', page: 28, url: 'https://nccnhnguideline.zeabur.app/?page=28' },
+        larynx_glot: { tx: 'GLOT-1', page: 44, url: 'https://nccnhnguideline.zeabur.app/?page=44' },
+        larynx_supra: { tx: 'SUPRA-1', page: 52, url: 'https://nccnhnguideline.zeabur.app/?page=52' },
+        nasopharynx: { tx: 'NASO-1', page: 36, url: 'https://nccnhnguideline.zeabur.app/?page=36' }
     };
     
     const info = nccnPages[site] || { tx: '-', page: 0, url: '' };
@@ -586,7 +586,7 @@ function getTx(site, t, n, m, rf) {
     
     function getPageBtn(page) {
     const match = page.match(/p\.(\d+)/);
-    if (match) return '<a href="https://nccnkiritu.zeabur.app/?page='+match[1]+'" target="_blank" class="pdf-page-btn">📄 第 '+match[1]+' 頁</a>';
+    if (match) return '<a href="https://nccnhnguideline.zeabur.app/?page='+match[1]+'" target="_blank" class="pdf-page-btn">📄 第 '+match[1]+' 頁</a>';
     return '<span class="pdf-page-btn">📄 '+page+'</span>';
 }
 return r.map(x => '<div class="treatment '+x.type+'"><h3>'+x.t+'</h3>'+x.i.map(i=>'<p>• '+i+'</p>').join('')+'<div class="treatment-ref">📖 '+x.ref+'</div>'+getPageBtn(x.page)+'</div>').join('') + linkHtml;
